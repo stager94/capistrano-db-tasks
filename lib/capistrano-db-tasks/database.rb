@@ -1,3 +1,4 @@
+require 'pry'
 module Database
   class Base
     attr_accessor :config, :output_file
@@ -75,7 +76,15 @@ module Database
 
     def download(local_file = "#{output_file}")
       remote_file = "#{@cap.current_path}/#{output_file}"
-      @cap.get remote_file, local_file
+      begin
+        @cap.get remote_file, local_file
+      rescue Exception => e
+        puts "\n"*3 + "ERROR: #{e.message}" + "\n"*3
+        user   = @cap.fetch :user
+        server = @cap.roles[:db].servers.first.to_s
+        # when we have ssh keys on remote machine, we can just use scp
+        system "scp #{user}@#{server}:#{remote_file} #{Dir.pwd}/#{local_file}"
+      end
     end
 
     # cleanup = true removes the mysqldump file after loading, false leaves it in db/
