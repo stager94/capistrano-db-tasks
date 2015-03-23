@@ -39,6 +39,9 @@ Add to config/deploy.rb:
 
     # if you want to work on a specific local environment (default = ENV['RAILS_ENV'] || 'development')
     set :locals_rails_env, "production"
+
+    # if you want exclude big table from dumping
+    set :exclude_tables, "big_big_table, big_big_table_2, .."
 ```
 
 Add to .gitignore
