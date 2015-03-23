@@ -82,7 +82,11 @@ module Database
 
     def download(local_file = "#{output_file}")
       remote_file = "#{@cap.current_path}/#{output_file}"
-      @cap.get remote_file, local_file
+      # @cap.get remote_file, local_file
+      user   = @cap.fetch :user
+      server = @cap.roles[:db].servers.first.to_s
+      # when we have ssh keys on remote machine, we can just use scp
+      system "scp #{user}@#{server}:#{remote_file} #{Dir.pwd}/#{local_file}"
     end
 
     # cleanup = true removes the mysqldump file after loading, false leaves it in db/
