@@ -44,7 +44,7 @@ module Database
       if mysql?
         "mysqldump #{credentials} #{database} --lock-tables=false"
       elsif postgresql?
-        "#{pgpass} pg_dump #{credentials} -c -O #{database}"
+        "#{pgpass} pg_dump #{credentials} -c -O #{exclude_tables} #{database}"
       end
     end
 
@@ -53,6 +53,13 @@ module Database
         "mysql #{credentials} -D #{database} < #{file}"
       elsif postgresql?
         "#{pgpass} psql #{credentials} #{database} < #{file}"
+      end
+    end
+
+    def exclude_tables
+      if (tables = @cap.fetch(:exclude_tables) rescue nil) && !tables.empty?
+        tables = tables.split(',').map(&:strip)
+        ['--exclude-table'].concat(tables).join(' ')
       end
     end
 
