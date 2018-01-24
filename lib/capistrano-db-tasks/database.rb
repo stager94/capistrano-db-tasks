@@ -69,6 +69,9 @@ module Database
     def initialize(cap_instance)
       super(cap_instance)
       @config = ""
+      p "Current path is #{@cap.current_path}"
+      p "Project path is #{@cap.project_path}"
+
       @cap.run("cat #{@cap.current_path}/config/database.yml") do |c, s, d|
         @config += d
       end
