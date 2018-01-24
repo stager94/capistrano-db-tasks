@@ -3,6 +3,8 @@ module Database
     attr_accessor :config, :output_file
     def initialize(cap_instance)
       @cap = cap_instance
+      p "Current path is #{@cap.current_path}"
+      p "Project path is #{@cap.project_path}"
     end
 
     def mysql?
