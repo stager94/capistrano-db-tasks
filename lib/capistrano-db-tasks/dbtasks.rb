@@ -25,6 +25,7 @@ if Capistrano::Configuration.instance(false)
       namespace :local do
         desc 'Synchronize your local database using remote database data'
         task :sync, :roles => :db do
+          puts "TEST"
           puts "Local database: #{Database::Local.new(instance).database}"
           if Util.prompt 'Are you sure you want to erase your local database with server database'
             Database.remote_to_local(instance)
